@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceRoot}/practicas"
+    },
+    "args": [
+        "-c"
+    ],
+    "tasks": [
+        {
+            "label": "make",
+            "command" : "make",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "clean",
+            "command": "make clean",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "build",
+            "command": "make build",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher" : []
+        },
+        {
+            "label": "run",
+            "command" : "make run",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}
