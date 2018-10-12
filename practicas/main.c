@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include "puzle.h"
 
 int main(void) {

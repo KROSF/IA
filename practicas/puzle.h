@@ -1,10 +1,5 @@
-/*******************************************/
-/*            PUZLE.H                      */
-/*                                         */
-/* Asignatura: Inteligencia Artificial     */
-/* Grado en Ingenieria Informatica - UCA   */
-/*******************************************/
-
+#ifndef PUZLE_H
+#define PUZLE_H
 
 #define ARRIBA 1
 #define ABAJO 2
@@ -37,39 +32,85 @@ static int puzle_final[N][N] = {
     {7,6,5}
 };
 
-
-/* A partir de una configuracion de fichas construye un 
-  estado valido para el problema de acuerdo al tipo de datos tEstado. */
+/**
+ * @brief  A partir de una configuracion de fichas
+ *         construye un estado valido.
+ * @param  celdas[N][N]: configuracion de fichas para generar estado.
+ * @retval tEstado con la cofiguracion dada.
+ */
 tEstado* crearEstado(int celdas[N][N]);
 
-/* Genera el estado inicial a partir de crearEstado y puzle_inicial. */
+/**
+ * @brief  Genera el estado inicial.
+ * @note   A partir de crearEstado y puzle_inicial
+ * @retval Estado desde el cual se inicia.
+ */
 tEstado* estadoInicial();
 
-
-/* Devuelve el coste de aplicar el operador. */
+/**
+ * @brief  Calcula el coste de aplicar un operador.
+ * @param  op: Operador a aplicar.
+ * @param  estado: Estado al que se aplica el operador.
+ * @retval Coste de aplicar el operador.
+ */
 int coste(unsigned op, tEstado* estado);
 
-/* Muestra el contenido del puzle. */
+/**
+ * @brief  Muestra el contenido del puzle.
+ * @param  estado: A mostrar.
+ */
 void dispEstado(tEstado* estado);
 
-/* Muestra el nombre de cada operador: Arriba, Abajo, Izquierda, Derecha. */
+/**
+ * @brief  Muestra el nombre de cada operador
+ * @note   Arriba, Abajo, Izquierda, Derecha.
+ * @param  op: Operador del que se desea saber el nombre.
+ */
 void dispOperador(unsigned op);
 
-/* Genera el estado final a partir de crearEstado y puzle_final. */
+/**
+ * @brief  Genera el estado final.
+ * @note   A partir de crearEstado y puzle_final.
+ * @retval Estado donde acaba el problema.
+ */
 tEstado* estadoObjetivo();
 
-
-/* Comprueba si es posible aplicar un operador a 
-   una configuracion determinada para el puzle.
-  Devuelve 1 si el movimiento es valido y 0 en otro caso. */
+/**
+ * @brief  Comprueba si es posible aplicar un operador a 
+ *         una configuracion determinada para el puzle.
+ * @note   
+ * @param  op: Operador a aplicar.
+ * @param  estado: Sobre el que se intenta aplicar.
+ * @retval 1: si el movimiento es valido.
+ *         0: en otro caso.
+ */
 int esValido(unsigned op, tEstado* estado);
 
-/* Aplica un operador a una configuracion concreta del puzle.
-  Devuelve la nueva configuracion del tablero tras el movimiento. */
+/**
+ * @brief  Aplica un operador a una configuracion concreta del puzle.
+ * @param  op: Operador a aplicar.
+ * @param  estado: Sobre el que aplica op.
+ * @retval nueva configuracion del tablero tras el movimiento.
+ */
 tEstado *aplicaOperador(unsigned op, tEstado* estado);
 
-/* Devuelve 1 si dos estados son iguales y 0 en caso contrario. */
+/**
+ * @brief  Compara si dos estados son iguales.
+ * @note   
+ * @param  s: tEstado cualquiera a comparar.
+ * @param  t: tEstado cualquiera a comparar.
+ * @retval 1: si son iguales.
+ *         0: en caso constrario.
+ */
 int iguales(tEstado* s, tEstado* t);
 
 /* Devuelve 1 si un estado es igual al estado objetivo. */
+/**
+ * @brief  Comprueba si un estado es el estado onjetivo.
+ * @param  estado: Que se desea comprobar.
+ * @retval 1: si estado es igual que estado Objetivo.
+ *         0: en caso contrario.
+ */
 int testObjetivo(tEstado* estado);
+
+#endif

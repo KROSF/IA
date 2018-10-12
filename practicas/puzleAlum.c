@@ -1,10 +1,3 @@
-/*******************************************/
-/*            PUZLE.C                      */
-/*                                         */
-/* Asignatura: Inteligencia Artificial     */
-/* Grado en Ingenieria Informatica - UCA   */
-/*******************************************/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -62,10 +55,6 @@ void dispOperador(unsigned op) {
     }
 }
 
-// FUNCIONES QUE SE HAN DE IMPLEMENTAR EN LA PRACTICA 1
-
-// Funcion auxiliar para comprobar si dos puzles tienen las 
-// fichas colocadas en el mismo orden en el tablero
 int iguales(tEstado* m, tEstado* n) {
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < N; ++j)
@@ -74,11 +63,9 @@ int iguales(tEstado* m, tEstado* n) {
     return 1;
 }
 
-
 int testObjetivo(tEstado* estado) {
     return iguales(estado, estadoObjetivo());
 }
-
 
 int esValido(unsigned op, tEstado* estado) {
     int valido = 0;
@@ -98,7 +85,6 @@ int esValido(unsigned op, tEstado* estado) {
     }
     return valido;
 }
-
 
 static void intercambioEstado(tEstado* e, int fnew, int cnew,int fold, int cold) {
     int ficha = e->celdas[fnew][cnew];
@@ -135,7 +121,3 @@ tEstado* aplicaOperador(unsigned op, tEstado* estado) {
         estado->col[0]);
     return nuevo;
 }
-
-
-
-

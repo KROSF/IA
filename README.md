@@ -1,0 +1,3 @@
+# PRACTICAS IA
+## PRACTICA 1
+* 8-Puzzle

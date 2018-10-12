@@ -37,6 +37,13 @@
             "type": "shell",
             "group": "build",
             "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "command" : "make test",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher": []
         }
     ]
 }
