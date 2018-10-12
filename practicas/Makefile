@@ -1,5 +1,13 @@
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+	CC = gcc
+endif
+ifeq ($(UNAME_S),Darwin)
+	CC = clang
+endif
+
+
 CFLAGS= -std=c11 -O3 -I../ctest -g -Wall
-CC = clang
 SRC = main.c puzleAlum.c
 OBJ = $(SRC:.c=.o)
 EXE = puzzle.out
