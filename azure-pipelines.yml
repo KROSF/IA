@@ -8,13 +8,11 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - script: |
-    cd practicas && make test
-  displayName: 'make test'
+  - script: cd practicas && make test
+    displayName: 'make test'
 - job: macOS1013
   pool:
     vmImage: 'xcode9-macos10.13'
   steps:
-  - script: |
-    cd practicas && make test
-  displayName: 'make test'
+  - script: cd practicas && make test
+    displayName: 'make test'
