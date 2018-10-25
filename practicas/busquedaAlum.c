@@ -128,7 +128,9 @@ int busquedaAnchura() {
             Sucesores = expandir(Actual);
             Abiertos = Concatenar(Abiertos, Sucesores);
         }
-        InsertarUltimo((void *) Actual, Cerrados);
+        if(!repetido) {
+            InsertarUltimo((void *) Actual, Cerrados);
+        }
     }
     dispSolucion(Actual);
     return objetivo;
@@ -155,7 +157,9 @@ int busquedaProfundidad() {
             Sucesores = expandir(Actual);
             Abiertos = Concatenar(Sucesores, Abiertos);
         }
-        InsertarUltimo((void *) Actual, Cerrados);
+        if(!repetido) {
+            InsertarUltimo((void *) Actual, Cerrados);
+        }
     }
     dispSolucion(Actual);
     return objetivo;
@@ -182,7 +186,9 @@ int busquedaProfundidadLimitada(int limite) {
             Sucesores = expandir(Actual);
             Abiertos = Concatenar(Sucesores, Abiertos);
         }
-        InsertarUltimo((void *) Actual, Cerrados);
+        if(!repetido) {
+            InsertarUltimo((void *) Actual, Cerrados);
+        }
     }
     if (objetivo)
         dispSolucion(Actual);
