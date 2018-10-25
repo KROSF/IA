@@ -64,11 +64,11 @@ Lista expandir(tNodo *nodo) {
     return sucesores;
 }
 
-int buscarRepe(tEstado* e, Lista C) {
+static int buscaRepe(tEstado* e, Lista C) {
     int encontrado = 0;
     tNodo* Actual = (tNodo*) malloc(sizeof(tNodo));
     for(int i = 0; i < C->Nelem && !encontrado; ++i) {
-        Actual = (tElemento *) (C->elementos[i]);
+        Actual = (void*) (C->elementos[i]);
         if( iguales(e,Actual->estado)) {
             encontrado = 1;
         }
@@ -109,7 +109,7 @@ int busqueda() {
 
 int busquedaAnchura() {
     int objetivo = 0;
-    int cerrado = 0;
+    int repetido = 0;
     tNodo* Actual = (tNodo*) malloc(sizeof(tNodo));
     tNodo* Inicial = nodoInicial();
 
@@ -122,9 +122,9 @@ int busquedaAnchura() {
     while (!ListaVacia(Abiertos) && !objetivo) {
         Actual = (void *) ExtraerPrimero(Abiertos);
         EliminarPrimero(Abiertos);
-        cerrado = buscarRepe(Actual->estado,Cerrados);
+        repetido = buscaRepe(Actual->estado,Cerrados);
         objetivo = testObjetivo(Actual->estado);
-        if (!objetivo && !cerrado) {
+        if (!objetivo && !repetido) {
             Sucesores = expandir(Actual);
             Abiertos = Concatenar(Abiertos, Sucesores);
         }
@@ -136,7 +136,7 @@ int busquedaAnchura() {
 
 int busquedaProfundidad() {
     int objetivo = 0;
-    int cerrado = 0;
+    int repetido = 0;
     tNodo* Actual = (tNodo*) malloc(sizeof(tNodo));
     tNodo* Inicial = nodoInicial();
 
@@ -149,14 +149,53 @@ int busquedaProfundidad() {
     while (!ListaVacia(Abiertos) && !objetivo) {
         Actual = (void *) ExtraerPrimero(Abiertos);
         EliminarPrimero(Abiertos);
-        cerrado = buscarRepe(Actual->estado,Cerrados);
+        repetido = buscaRepe(Actual->estado,Cerrados);
         objetivo = testObjetivo(Actual->estado);
-        if (!objetivo && !cerrado) {
+        if (!objetivo && !repetido) {
             Sucesores = expandir(Actual);
             Abiertos = Concatenar(Sucesores, Abiertos);
         }
         InsertarUltimo((void *) Actual, Cerrados);
     }
     dispSolucion(Actual);
+    return objetivo;
+}
+
+int busquedaProfundidadLimitada(int limite) {
+    int objetivo = 0;
+    int repetido = 0;
+    tNodo* Actual = (tNodo*) malloc(sizeof(tNodo));
+    tNodo* Inicial = nodoInicial();
+
+    Lista Abiertos = (Lista)CrearLista(MAXI);
+    Lista Cerrados = (Lista)CrearLista(MAXI);
+    Lista Sucesores;
+
+    InsertarUltimo((void *) Inicial, Abiertos);
+
+    while (!ListaVacia(Abiertos) && !objetivo) {
+        Actual = (void *) ExtraerPrimero(Abiertos);
+        EliminarPrimero(Abiertos);
+        repetido = buscaRepe(Actual->estado,Cerrados);
+        objetivo = testObjetivo(Actual->estado);
+        if (!objetivo && !repetido && Actual->profundidad < limite) {
+            Sucesores = expandir(Actual);
+            Abiertos = Concatenar(Sucesores, Abiertos);
+        }
+        InsertarUltimo((void *) Actual, Cerrados);
+    }
+    if (objetivo)
+        dispSolucion(Actual);
+    else printf("No existe solucion en profundidad %d\n",limite);
+    return objetivo;
+}
+
+int busquedaProfundidadIterativa() {
+    int limite = 1;
+    int objetivo = 0;
+    while(!objetivo){
+        objetivo = busquedaProfundidadLimitada(limite);
+        ++limite;
+    }
     return objetivo;
 }

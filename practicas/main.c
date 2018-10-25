@@ -5,7 +5,7 @@
 int main(void) {
     printf("\nBusqueda anchura\n");
     busquedaAnchura();
-    printf("\nBusqueda profundidad\n");
-    busquedaProfundidad();
+    printf("\nBusqueda profundidad Iterativa\n");
+    busquedaProfundidadIterativa();
     return 0;
 }
