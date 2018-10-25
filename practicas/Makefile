@@ -8,7 +8,7 @@ endif
 
 
 CFLAGS= -std=c11 -O3 -I../ctest -g -Wall
-SRC = main.c puzleAlum.c
+SRC = main.c puzleAlum.c busquedaAlum.c listaia.c
 OBJ = $(SRC:.c=.o)
 EXE = puzzle.out
 TST = puzzleTest.out

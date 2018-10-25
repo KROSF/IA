@@ -6,7 +6,7 @@
 #define IZQUIERDA 3
 #define DERECHA 4
 #define NUM_OPERADORES 4
-#define N 3
+#define N 2
 
 
 #ifndef _tEstado_
@@ -19,18 +19,18 @@
 #endif
 
 
-static int puzle_inicial[N][N] = {
-    {1,2,3},
-    {8,6,4},
-    {7,0,5}
-};
-
-
-static int puzle_final[N][N] = {
-    {1,2,3},
-    {8,0,4},
-    {7,6,5}
-};
+// static int puzle_inicial[N][N] = {
+//     {1,2,3},
+//     {8,6,4},
+//     {7,0,5}
+// };
+static int puzle_inicial[N][N] = {{0, 1}, {3, 2}};
+static int puzle_final[N][N] = {{1, 2},{0, 3}};
+// static int puzle_final[N][N] = {
+//     {1,2,3},
+//     {8,0,4},
+//     {7,6,5}
+// };
 
 /**
  * @brief  A partir de una configuracion de fichas
