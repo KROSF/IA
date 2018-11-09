@@ -44,6 +44,16 @@
             "type": "shell",
             "group": "build",
             "problemMatcher": []
+        },
+        {
+            "label": "zip",
+            "command" : "zip SanabriaFlores.zip practicas/*.[ch]",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher" : [],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            }
         }
     ]
 }

@@ -92,3 +92,24 @@ void DestruirLista(Lista C) {
    free(C->elementos);
    free(C);
 }
+
+int cmp(const void* e1, const void* e2) {
+    tNodo* el1 = (void*) e1;
+    tNodo* el2 = (void*) e2;
+    return (el2->valHeuristica + el2->costeCamino) - (el1->valHeuristica+el1->costeCamino);
+}
+
+Lista Ordenar(Lista L1, Lista L2) {
+    L1 = Concatenar(L1,L2);
+    qsort(L1->elementos + L1->inicio-L1->fin, L1->Nelem, sizeof(tElemento), cmp);
+    return L1;
+}
+
+void dispList(Lista L1) {
+    tNodo* Actual = (tNodo*) malloc(sizeof(tNodo));
+    for (int i = L1->inicio; i < L1->Nelem; ++i) {
+        Actual = (void *) L1->elementos[i];
+        printf("%d ",Actual->valHeuristica + Actual->costeCamino);
+    }
+    printf("\n");
+}

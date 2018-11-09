@@ -3,9 +3,7 @@
 #include "puzle.h"
 
 int main(void) {
-    printf("\nBusqueda anchura\n");
-    busquedaAnchura();
-    printf("\nBusqueda profundidad Iterativa\n");
-    busquedaProfundidad();
+    //printf("\nBusqueda anchura\n");
+    busquedaA();
     return 0;
 }

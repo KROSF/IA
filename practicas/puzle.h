@@ -6,7 +6,7 @@
 #define IZQUIERDA 3
 #define DERECHA 4
 #define NUM_OPERADORES 4
-#define N 2
+#define N 3
 
 
 #ifndef _tEstado_
@@ -19,18 +19,18 @@
 #endif
 
 
-// static int puzle_inicial[N][N] = {
-//     {1,2,3},
-//     {8,6,4},
-//     {7,0,5}
-// };
-static int puzle_inicial[N][N] = {{0, 1}, {3, 2}};
-static int puzle_final[N][N] = {{1, 2},{0, 3}};
-// static int puzle_final[N][N] = {
-//     {1,2,3},
-//     {8,0,4},
-//     {7,6,5}
-// };
+static int puzle_inicial[N][N] = {
+    {8,1,3},
+    {0,2,4},
+    {7,6,5}
+};
+// static int puzle_inicial[N][N] = {{0, 1}, {3, 2}};
+// static int puzle_final[N][N] = {{1, 2},{0, 3}};
+static int puzle_final[N][N] = {
+    {1,2,3},
+    {8,0,4},
+    {7,6,5}
+};
 
 /**
  * @brief  A partir de una configuracion de fichas
@@ -104,7 +104,6 @@ tEstado *aplicaOperador(unsigned op, tEstado* estado);
  */
 int iguales(tEstado* s, tEstado* t);
 
-/* Devuelve 1 si un estado es igual al estado objetivo. */
 /**
  * @brief  Comprueba si un estado es el estado onjetivo.
  * @param  estado: Que se desea comprobar.
@@ -112,5 +111,19 @@ int iguales(tEstado* s, tEstado* t);
  *         0: en caso contrario.
  */
 int testObjetivo(tEstado* estado);
+
+/**
+ * @brief  Heuristica de manhattan.
+ * @param  act: Estado para el cual calculamos la heuristica.
+ * @retval valor de la heuristica.
+ */
+int hManhattan(tEstado* act);
+
+/**
+ * @brief  Heuristica teniendo en cuenta las piezas mal colocadas.
+ * @param  act: Estado para el cual calculamos la heuristica.
+ * @retval valor de la heuristica.
+ */
+int hPiezasMalColocadas(tEstado* act);
 
 #endif

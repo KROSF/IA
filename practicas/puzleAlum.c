@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <math.h>
 #include "puzle.h"
 
 tEstado* crearEstado(int puzle[N][N]) {
@@ -32,26 +32,44 @@ int coste(unsigned op, tEstado* estado) {
    return 1;
 }
 
+int hManhattan(tEstado* act) {
+    tEstado obj = *estadoObjetivo();
+    int sum = 0;
+    for (int i = 0; i < N*N; ++i) {
+        sum += (abs(act->fila[i] - obj.fila[i]) + abs(act->col[i] - obj.col[i]));
+    }
+    return sum;
+}
+
+int hPiezasMalColocadas(tEstado* act) {
+    tEstado obj = *estadoObjetivo();
+    int sum = 0;
+    for (int i = 0; i < N; ++i)
+        for (int j = 0; j < N; ++j)
+            if (act->celdas[i][j] != obj.celdas[i][j])
+                ++sum;
+    return sum;
+}
 /* VISUALIZACION DE ESTADOS Y OPERADORES*/
 
 
 void dispEstado(tEstado* estado) {
     for (int i = 0; i < N; ++i) {
+        printf("[");
         for (int j = 0; j < N; ++j) {
             printf("%d", estado->celdas[i][j]);
         }
-        printf("\n");
+            printf("]\n");
     }
-    printf("\n");
 }
 
 
 void dispOperador(unsigned op) {
     switch (op) {
-        case ARRIBA:    printf("Movimiento ARRIBA:\n");    break;
-        case ABAJO:     printf("Movimiento ABAJO:\n");     break;
-        case IZQUIERDA: printf("Movimiento IZQUIERDA:\n"); break;
-        case DERECHA:   printf("Movimiento DERECHA:\n");   break;
+        case ARRIBA:    printf("ARRIBA:\n\n");    break;
+        case ABAJO:     printf("ABAJO:\n\n");     break;
+        case IZQUIERDA: printf("IZQUIERDA:\n\n"); break;
+        case DERECHA:   printf("DERECHA:\n\n");   break;
     }
 }
 

@@ -7,7 +7,7 @@ ifeq ($(UNAME_S),Darwin)
 endif
 
 
-CFLAGS= -std=c11 -O3 -I../ctest -g -Wall
+CFLAGS= -std=c11 -O3 -I../ctest -g -lm -Wall
 SRC = main.c puzleAlum.c busquedaAlum.c listaia.c
 OBJ = $(SRC:.c=.o)
 EXE = puzzle.out

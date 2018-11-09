@@ -41,11 +41,14 @@
     //Pre: Lista L1 no est� vac�a
     //Post: Devuelve L1=L1+L2
     Lista Concatenar(Lista L1,Lista L2);
+    Lista Ordenar(Lista L1, Lista L2);
 
     void EliminarPrimero(Lista C);
 
     void DestruirLista(Lista C);
 
     int buscarRepe(tEstado* e, Lista C);
+    
+    void dispList(Lista L1);
 
 #endif

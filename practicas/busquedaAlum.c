@@ -31,10 +31,11 @@ void dispSolucion(tNodo* nodo) {
 /* Crea el nodo ra�z. */
 tNodo* nodoInicial() {
     tNodo* inicial = (tNodo *) malloc(sizeof(tNodo));
-    inicial->estado=estadoInicial();
-    inicial->padre=NULL;
-    inicial->costeCamino=0;
-    inicial->profundidad=0;
+    inicial->estado = estadoInicial();
+    inicial->padre = NULL;
+    inicial->costeCamino = 0;
+    inicial->profundidad = 0;
+    inicial->valHeuristica = hManhattan(inicial->estado);
     return inicial;
 }
 
@@ -52,6 +53,7 @@ Lista expandir(tNodo *nodo) {
             nuevo->estado = s;
             nuevo->padre = nodo;
             nuevo->operador = op;
+            nuevo->valHeuristica = hManhattan(s);
             nuevo->costeCamino = nodo->costeCamino + coste(op,nodo->estado);
             nuevo->profundidad = nodo->profundidad+1;
             if (!ListaLlena(sucesores)){
@@ -203,5 +205,38 @@ int busquedaProfundidadIterativa() {
         objetivo = busquedaProfundidadLimitada(limite);
         ++limite;
     }
+    return objetivo;
+}
+
+
+int busquedaA() {
+    int objetivo = 0;
+    int repetido = 0;
+    tNodo* Actual = (tNodo*) malloc(sizeof(tNodo));
+    tNodo* Inicial = nodoInicial();
+
+    Lista Abiertos = (Lista)CrearLista(MAXI);
+    Lista Cerrados = (Lista)CrearLista(MAXI);
+    Lista Sucesores;
+
+    InsertarUltimo((void *) Inicial, Abiertos);
+
+    while (!ListaVacia(Abiertos) && !objetivo) {
+        Actual = (void *) ExtraerPrimero(Abiertos);
+        EliminarPrimero(Abiertos);
+        repetido = buscaRepe(Actual->estado,Cerrados);
+        objetivo = testObjetivo(Actual->estado);
+        if (!objetivo && !repetido) {
+            Sucesores = expandir(Actual);
+            printf("Sucesores: ");
+            dispList(Sucesores);
+            Abiertos = Ordenar(Abiertos, Sucesores);
+            InsertarUltimo((void *) Actual, Cerrados);
+            printf("Ordenados: ");
+            dispList(Abiertos);
+            getchar();
+        }
+    }
+    dispSolucion(Actual);
     return objetivo;
 }

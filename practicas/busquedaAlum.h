@@ -5,4 +5,5 @@ int busquedaAnchura();
 int busquedaProfundidad();
 int busquedaProfundidadLimitada(int);
 int busquedaProfundidadIterativa();
+int busquedaA();
 #endif
