@@ -8,12 +8,14 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - script: cd practicas && make build
-    displayName: 'make test'
+  - script: sudo apt-get install libgtk2.0-dev
+    displayName: 'installing glib-2.0'
+  - script: cd practicas_con_glib && make run
 - job: macOS1013
   pool:
     vmImage: 'xcode9-macos10.13'
   steps:
-  - script: git submodule update --init --recursive
-  - script: cd practicas && make test
+  - script: brew install glib
+    displayName: 'installing glib-2.0'
+  - script: cd practicas_con_glib && make run
     displayName: 'make test'
