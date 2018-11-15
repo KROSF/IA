@@ -6,7 +6,7 @@
 #define IZQUIERDA 3
 #define DERECHA 4
 #define NUM_OPERADORES 4
-#define DIMENSION 2
+#define DIMENSION 3
 
 typedef struct {
     int celdas [DIMENSION][DIMENSION];

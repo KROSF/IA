@@ -13,11 +13,11 @@ static tNodo* sucesoresNodo(tNodo* n, unsigned op) {
     return nuevo;
 }
 
-dynarray* Expandir(tNodo* n) {
-    dynarray* sucesores = dynarray_create(0);
+GQueue* Expandir(tNodo* n) {
+    GQueue* sucesores = g_queue_new();
     for (unsigned op = 1; op <= NUM_OPERADORES; ++op) {
         if (esValido(n->estado, op) == 1) {
-            dynarray_add_tail(sucesores, (void*) sucesoresNodo(n, op));
+            g_queue_push_tail(sucesores,(void*) sucesoresNodo(n, op));
         }
     }
     return sucesores;
@@ -53,8 +53,15 @@ void dispSolucion(tNodo* n) {
     printf("Coste = %d\n", n->costeCamino);
 }
 
-unsigned int estadoNodoIguales(const void* e1, const void* e2) {
+gint estadoNodoIguales(gconstpointer e1, gconstpointer e2) {
     tNodo* el1 = (tNodo*) e1;
     tNodo* el2 = (tNodo*) e2;
-    return (unsigned int) iguales(el1->estado, el2->estado);
+    return (gint) !iguales(el1->estado, el2->estado);
+}
+
+GQueue* g_queue_merge_sorted(GQueue* a, GQueue* s, GCompareDataFunc cmp) {
+    while(!g_queue_is_empty(s)) {
+        g_queue_insert_sorted(a, g_queue_pop_head(s), cmp, NULL);
+    }
+    return a;
 }

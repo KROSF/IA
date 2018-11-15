@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/local/Cellar/glib/2.58.1/include/glib-2.0",
+                "/usr/local/Cellar/glib/2.58.1/lib/glib-2.0/include"
+            ],
+            "defines": [],
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "browse": {
+                "path": [
+                    "/usr/local/Cellar/glib/2.58.1/include/glib-2.0",
+                    "/usr/local/Cellar/glib/2.58.1/lib/glib-2.0/include"
+                ]
+            },
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

@@ -21,13 +21,15 @@ tEstado* crearEstado(int tabla[DIMENSION][DIMENSION]) {
 }
 
 static int puzle_inicial[DIMENSION][DIMENSION] = {
-    {0,2},
-    {1,3}
+    {1,3,7},
+    {2,8,5},
+    {4,6,0}
 };
 
 static int puzle_final[DIMENSION][DIMENSION] = {
-    {1,2},
-    {3,0}
+    {0,1,3},
+    {4,2,7},
+    {6,5,8}
 };
 
 tEstado* estadoInicial() {

@@ -5,19 +5,19 @@
 #include "sortedarray.h"
 
 int vorax(const void* e1, const void* e2) {
-    tNodo* el1 = (void*) e1;
-    tNodo* el2 = (void*) e2;
+    tNodo* el1 = (tNodo*) e1;
+    tNodo* el2 = (tNodo*) e2;
     return el1->valHeuristica - el2->valHeuristica;
 }
 
 int AEstrella(const void* e1, const void* e2) {
-    tNodo* el1 = (void*) e1;
-    tNodo* el2 = (void*) e2;
+    tNodo* el1 = (tNodo*) e1;
+    tNodo* el2 = (tNodo*) e2;
     return (el1->valHeuristica + el1->costeCamino) - (el2->valHeuristica + el2->costeCamino);
 }
 
 void dispH(void* e) {
-    tNodo* ee = (void*) e;
+    tNodo* ee = (tNodo*) e;
     printf("%d ",ee->costeCamino + ee->valHeuristica);
 }
 
@@ -32,18 +32,9 @@ int busquedaInformada(FuncionEvaluacion f) {
         sortedarray_remove_at(abiertos, 0);
         objetivo = esObjetivo(actual->estado);
         repetido = dynarray_elto_belongs(cerrados, (void*)actual, estadoNodoIguales);
-        dispEstado(actual->estado);
-        //getchar();
-        printf("(%d, %d)", objetivo, repetido);
         if (!objetivo && !repetido) {
             sortedarray_add_dynarray(abiertos, Expandir(actual));
-            //printf("Abiertos: ");
-            sortedarray_for_each(abiertos,(sortedarray_forfn) dispH);
-            //printf("\n");
-            //printf("Cerrados: ");
             dynarray_add_tail(cerrados, actual);
-            //dynarray_for_each(cerrados, (dynarray_forfn) dispH);
-            //printf("\n");
         }
     }
     if (objetivo) {
