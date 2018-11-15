@@ -19,7 +19,7 @@ run: $(EXE)
 	@./$<
 
 $(EXE) : $(OBJ)
-	$(CC) $(CFLAGS) -lm -lglib-2.0 $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ -lm -lglib-2.0
 	@rm -f $^
 
 $(OBJ) : $(SRC)
