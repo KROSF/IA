@@ -1,9 +1,6 @@
-#include <stdio.h>
-#include "busquedaAlum.h"
-#include "puzle.h"
+#include "busqueda.h"
 
-int main(void) {
-    //printf("\nBusqueda anchura\n");
-    busquedaA();
-    return 0;
+int main()
+{
+  busquedaInformada(AEstrella);
 }

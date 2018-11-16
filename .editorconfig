@@ -7,7 +7,8 @@ end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = false
 insert_final_newline = true
-
+[{*.c,*.h}]
+indent_size = 2
 [{Makefile,**.mk}]
 indent_style = tab
 

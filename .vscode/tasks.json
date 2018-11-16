@@ -47,7 +47,7 @@
         },
         {
             "label": "zip",
-            "command" : "zip SanabriaFlores.zip v2/*.[ch]",
+            "command" : "zip SanabriaFlores.zip practicas/*.[ch]",
             "type": "shell",
             "group": "build",
             "problemMatcher" : [],
