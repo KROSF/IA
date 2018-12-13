@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "MinMax",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/minimax/minimax.out",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        },
+        {
             "name": "puzzle v2",
             "type": "cppdbg",
             "request": "launch",

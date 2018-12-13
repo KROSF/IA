@@ -54,6 +54,16 @@
             "options": {
                 "cwd": "${workspaceRoot}"
             }
+        },
+        {
+            "label": "zip-minimax",
+            "command" : "zip ~/Desktop/SanabriaFlores.zip minimax/* -x '*.out'",
+            "type": "shell",
+            "group": "build",
+            "problemMatcher" : [],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            }
         }
     ]
 }
