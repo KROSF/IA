@@ -11,7 +11,7 @@ jobs:
   pool:
     vmImage: 'xcode9-macos10.13'
   steps:
-  - script: brew install glib
+  - script: brew install pkg-config glib
     displayName: 'installing glib-2.0'
   - script: cd practicas && make run
     displayName: 'build and run'

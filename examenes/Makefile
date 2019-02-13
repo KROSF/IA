@@ -5,7 +5,7 @@ ifeq ($(UNAME_S),Linux)
 endif
 ifeq ($(UNAME_S),Darwin)
 	CC = clang
-	CFLAGS= -std=c11 -O3 -g -Wall  $(shell pkg-config --cflags glib-2.0)
+	CFLAGS= -std=c11 -O3 -g -Wall $(shell pkg-config --cflags glib-2.0)
 endif
 SRC = main.c busqueda.c nodo.c puzzle.c 
 OBJ = $(SRC:.c=.o)
