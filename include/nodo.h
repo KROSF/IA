@@ -4,16 +4,14 @@
 #include <glib.h>
 #include "puzzle.h"
 
-typedef struct NodoBusqueda {
+typedef struct _tNodo {
   tEstado *estado;
-  struct NodoBusqueda *padre;
+  struct _tNodo *padre;
   unsigned operador;
   int costeCamino;
   int profundidad;
   int valHeuristica;
-} tNodoBusqueda;
-
-typedef tNodoBusqueda tNodo;
+} tNodo;
 
 GQueue *Expandir(tNodo *);
 GQueue *g_queue_merge_sorted(GQueue *a, GQueue *s, GCompareDataFunc cmp);
