@@ -3,6 +3,6 @@
 #include <stdarg.h>
 
 // Simple as we want
-int c_printf(const char*, ...);
+int c_printf(const char *, ...);
 
 #endif

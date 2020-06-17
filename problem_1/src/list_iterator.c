@@ -13,10 +13,11 @@
  */
 
 list_iterator_t *
-list_iterator_new(list_t *list, list_direction_t direction) {
+list_iterator_new(list_t *list, list_direction_t direction)
+{
   list_node_t *node = direction == LIST_HEAD
-    ? list->head
-    : list->tail;
+                          ? list->head
+                          : list->tail;
   return list_iterator_new_from_node(node, direction);
 }
 
@@ -26,7 +27,8 @@ list_iterator_new(list_t *list, list_direction_t direction) {
  */
 
 list_iterator_t *
-list_iterator_new_from_node(list_node_t *node, list_direction_t direction) {
+list_iterator_new_from_node(list_node_t *node, list_direction_t direction)
+{
   list_iterator_t *self;
   if (!(self = LIST_MALLOC(sizeof(list_iterator_t))))
     return NULL;
@@ -41,12 +43,14 @@ list_iterator_new_from_node(list_node_t *node, list_direction_t direction) {
  */
 
 list_node_t *
-list_iterator_next(list_iterator_t *self) {
+list_iterator_next(list_iterator_t *self)
+{
   list_node_t *curr = self->next;
-  if (curr) {
+  if (curr)
+  {
     self->next = self->direction == LIST_HEAD
-      ? curr->next
-      : curr->prev;
+                     ? curr->next
+                     : curr->prev;
   }
   return curr;
 }
@@ -55,8 +59,8 @@ list_iterator_next(list_iterator_t *self) {
  * Free the list iterator.
  */
 
-void
-list_iterator_destroy(list_iterator_t *self) {
+void list_iterator_destroy(list_iterator_t *self)
+{
   LIST_FREE(self);
   self = NULL;
 }
