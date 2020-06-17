@@ -1,5 +1,0 @@
-# Practicas IA
-
-## Dependencias
-
--   glib
