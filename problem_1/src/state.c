@@ -36,20 +36,24 @@ static bool vehicle_contains_point(const Vehicle *vehicle, const Point *point) {
 static bool vehicle_contains_vehicle(const Vehicle *lhs, const Vehicle *rhs) {
   const Point upper_down = (Point){.x = rhs->upper.x, .y = rhs->down.y};
   const Point down_upper = (Point){.x = rhs->down.x, .y = rhs->upper.y};
+
   return vehicle_contains_point(lhs, &rhs->upper) || vehicle_contains_point(lhs, &rhs->down) ||
          vehicle_contains_point(lhs, &upper_down) || vehicle_contains_point(lhs, &down_upper);
 }
 
 static bool is_valid_movement(const Vehicle *vehicle, const State *state, Point direction) {
   Vehicle next = {.upper = point_add(&vehicle->upper, &direction), .down = point_add(&vehicle->down, &direction)};
+
   if (!(next.upper.x > 0) || !(next.down.x < state->rows) || !(next.upper.y > 0) || !(next.down.y < state->cols)) {
     return false;
   }
+
   for (size_t i = 0; i < 4; ++i) {
     if ((!vehicle_equals(vehicle, &state->vehicles[i])) && vehicle_contains_vehicle(vehicle, &state->vehicles[i])) {
       return false;
     }
   }
+
   return true;
 }
 
@@ -61,6 +65,7 @@ bool state_is_target(const State *state) { return point_equals(&state->vehicles[
 
 bool state_is_valid_operator(const State *state, Operator op) {
   const Vehicle *vehicle = &state->vehicles[vehicle_index_from_operator(op)];
+
   switch (op) {
     case UP_V0:
     case UP_V1:
@@ -85,4 +90,18 @@ bool state_is_valid_operator(const State *state, Operator op) {
     default:
       return false;
   }
+}
+
+bool state_equals(const State *rhs, const State *lhs) {
+  if (rhs->cols != lhs->cols || lhs->rows != rhs->rows || !vehicle_equals(&rhs->exit, &lhs->exit)) {
+    return false;
+  }
+
+  for (size_t i = 0; i < 4; ++i) {
+    if (!vehicle_equals(&rhs->vehicles[i], &lhs->vehicles[i])) {
+      return false;
+    }
+  }
+
+  return true;
 }
