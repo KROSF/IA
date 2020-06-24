@@ -105,3 +105,40 @@ bool state_equals(const State *rhs, const State *lhs) {
 
   return true;
 }
+
+State *state_apply_operator(const State *current, Operator op) {
+  State *next = (State *)malloc(sizeof(State));
+  memcpy(next, current, sizeof(State));
+  Vehicle *vehicle = &next->vehicles[vehicle_index_from_operator(op)];
+  switch (op) {
+    case UP_V0:
+    case UP_V1:
+    case UP_V2:
+    case UP_V3:
+      vehicle->upper.x -= 1;
+      vehicle->down.x -= 1;
+      break;
+    case DOWN_V0:
+    case DOWN_V1:
+    case DOWN_V2:
+    case DOWN_V3:
+      vehicle->upper.x += 1;
+      vehicle->down.x += 1;
+      break;
+    case LEFT_V0:
+    case LEFT_V1:
+    case LEFT_V2:
+    case LEFT_V3:
+      vehicle->upper.y -= 1;
+      vehicle->down.y -= 1;
+      break;
+    case RIGHT_V0:
+    case RIGHT_V1:
+    case RIGHT_V2:
+    case RIGHT_V3:
+      vehicle->upper.y += 1;
+      vehicle->down.y += 1;
+      break;
+  }
+  return next;
+}
