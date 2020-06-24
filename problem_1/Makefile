@@ -8,7 +8,7 @@ endif
 
 CC = gcc
 
-SRC = $(addprefix src/, main.c list.c list_node.c list_iterator.c c_printf.c)
+SRC = $(addprefix src/, main.c list.c list_node.c list_iterator.c c_printf.c vehicle.c)
 OBJ = $(SRC:.c=.o)
 EXE = vehicle.out
 
@@ -21,6 +21,7 @@ run: $(EXE)
 
 $(EXE) : $(OBJ)
 	$(CC) $(CFLAGS) $^ -o $@
+	@rm -f $^
 
 $(OBJ) : $(SRC)
 

@@ -1,15 +1,15 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
+
 #include <stdbool.h>
 
-typedef struct vehicle_t
-{
-  int upper_i;
-  int upper_j;
-  int bottom_i;
-  int bottom_j;
-} vehicle;
+#include "point.h"
 
-bool v_equals(vehicle *v, vehicle *w);
+typedef struct vehicle_t {
+  Point upper;
+  Point down;
+} Vehicle;
+
+bool vehicle_equals(const Vehicle *lhs, const Vehicle *rhs);
 
 #endif

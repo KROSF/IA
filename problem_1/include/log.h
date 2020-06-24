@@ -1,8 +1,8 @@
 #ifndef __LOG_h__
 #define __LOG_h__
 
-#include <stdio.h>
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 
 #ifndef LOGLEVEL
