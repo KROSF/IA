@@ -25,6 +25,8 @@ static int vehicle_index_from_operator(Operator op) {
     case LEFT_V3:
     case RIGHT_V3:
       return 3;
+    default:
+      exit(1);
   }
 }
 
@@ -58,7 +60,8 @@ static bool is_valid_movement(const Vehicle *vehicle, const State *state, Point 
 }
 
 State state_new(Vehicle vehicles[4], int rows, int cols, Vehicle exit) {
-  return (State){.vehicles = vehicles, .rows = rows, .cols = cols, .exit = exit};
+  return (State){
+      .vehicles = {vehicles[0], vehicles[1], vehicles[2], vehicles[3]}, .rows = rows, .cols = cols, .exit = exit};
 }
 
 bool state_is_target(const State *state) { return point_equals(&state->vehicles[0].upper, &state->exit.upper); }
@@ -139,6 +142,32 @@ State *state_apply_operator(const State *current, Operator op) {
       vehicle->upper.y += 1;
       vehicle->down.y += 1;
       break;
+    default:
+      exit(1);
   }
   return next;
+}
+
+State state_random();
+State state_from_stdin() {
+  int rows = 0;
+  int cols = 0;
+  int exit_col = 0;
+  Vehicle vehicles[4] = {};
+  printf("Insert number of rows: ");
+  scanf("%d", &rows);
+  printf("Insert number of cols: ");
+  scanf("%d", &cols);
+  printf("Insert col of exit: ");
+  scanf("%d", &exit_col);
+  printf("Insert coordinates for vehicle V0 (the one who reaches the exit)\n");
+  vehicles[0] = vehicle_from_stdin((Point){1, 1});
+  printf("Insert coordinates for vehicle V1\n");
+  vehicles[1] = vehicle_from_stdin((Point){1, 0});
+  printf("Insert coordinates for vehicle V2\n");
+  vehicles[2] = vehicle_from_stdin((Point){0, 1});
+  printf("Insert coordinates for vehicle V3\n");
+  vehicles[3] = vehicle_from_stdin((Point){0, 0});
+  return state_new(vehicles, rows, cols,
+                   (Vehicle){.upper = {.x = rows - 1, .y = exit_col}, .down = {.x = rows - 1, .y = exit_col + 1}});
 }

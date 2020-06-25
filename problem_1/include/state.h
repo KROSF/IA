@@ -1,5 +1,5 @@
-#ifndef STATE_T_H
-#define STATE_TH
+#ifndef STATE_H
+#define STATE_H
 #include <stdbool.h>
 
 #include "vehicle.h"
@@ -31,10 +31,14 @@ typedef enum operator_t {
   OPERATORS
 } Operator;
 
+typedef int (*Heuristic)(const State *state);
+
 bool state_is_target(const State *state);
 State *state_apply_operator(const State *state, Operator op);
 bool state_is_valid_operator(const State *state, Operator op);
 bool state_equals(const State *rhs, const State *lhs);
 State state_new(Vehicle vehicles[4], int rows, int cols, Vehicle exit);
+State state_random();
+State state_from_stdin();
 
 #endif

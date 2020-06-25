@@ -5,14 +5,35 @@
  */
 list_t *list_new(void) {
   list_t *self;
-  if (!(self = LIST_MALLOC(sizeof(list_t))))
-    return NULL;
+  if (!(self = LIST_MALLOC(sizeof(list_t)))) return NULL;
   self->head = NULL;
   self->tail = NULL;
   self->free = NULL;
   self->match = NULL;
+  self->cmp = NULL;
   self->len = 0;
   return self;
+}
+
+void list_sort(list_t *self) {
+  void *tmp;
+  for (list_node_t *a = self->head; a != NULL; a = a->next) {
+    for (list_node_t *b = a->next; b != NULL; b = b->next) {
+      if (self->cmp(a->val, b->val)) {
+        tmp = a->val;
+        a->val = b->val;
+        b->val = tmp;
+      }
+    }
+  }
+}
+
+void list_merge(list_t *rhs, list_t *lhs) {
+  list_node_t *node;
+
+  while ((node = list_lpop(lhs))) {
+    list_rpush(rhs, node);
+  }
 }
 
 /*
@@ -25,8 +46,7 @@ void list_destroy(list_t *self) {
 
   while (len--) {
     next = curr->next;
-    if (self->free)
-      self->free(curr->val);
+    if (self->free) self->free(curr->val);
     LIST_FREE(curr);
     curr = next;
   }
@@ -39,8 +59,7 @@ void list_destroy(list_t *self) {
  * and return the node, NULL on failure.
  */
 list_node_t *list_rpush(list_t *self, list_node_t *node) {
-  if (!node)
-    return NULL;
+  if (!node) return NULL;
 
   if (self->len) {
     node->prev = self->tail;
@@ -60,8 +79,7 @@ list_node_t *list_rpush(list_t *self, list_node_t *node) {
  * Return / detach the last node in the list, or NULL.
  */
 list_node_t *list_rpop(list_t *self) {
-  if (!self->len)
-    return NULL;
+  if (!self->len) return NULL;
 
   list_node_t *node = self->tail;
 
@@ -79,8 +97,7 @@ list_node_t *list_rpop(list_t *self) {
  * Return / detach the first node in the list, or NULL.
  */
 list_node_t *list_lpop(list_t *self) {
-  if (!self->len)
-    return NULL;
+  if (!self->len) return NULL;
 
   list_node_t *node = self->head;
 
@@ -99,8 +116,7 @@ list_node_t *list_lpop(list_t *self) {
  * and return the node, NULL on failure.
  */
 list_node_t *list_lpush(list_t *self, list_node_t *node) {
-  if (!node)
-    return NULL;
+  if (!node) return NULL;
 
   if (self->len) {
     node->next = self->head;
@@ -155,8 +171,7 @@ list_node_t *list_at(list_t *self, int index) {
   if ((unsigned)index < self->len) {
     list_iterator_t *it = list_iterator_new(self, direction);
     list_node_t *node = list_iterator_next(it);
-    while (index--)
-      node = list_iterator_next(it);
+    while (index--) node = list_iterator_next(it);
     list_iterator_destroy(it);
     return node;
   }
@@ -168,16 +183,11 @@ list_node_t *list_at(list_t *self, int index) {
  * Remove the given node from the list, freeing it and it's value.
  */
 void list_remove(list_t *self, list_node_t *node) {
-  node->prev
-      ? (node->prev->next = node->next)
-      : (self->head = node->next);
+  node->prev ? (node->prev->next = node->next) : (self->head = node->next);
 
-  node->next
-      ? (node->next->prev = node->prev)
-      : (self->tail = node->prev);
+  node->next ? (node->next->prev = node->prev) : (self->tail = node->prev);
 
-  if (self->free)
-    self->free(node->val);
+  if (self->free) self->free(node->val);
 
   LIST_FREE(node);
   --self->len;

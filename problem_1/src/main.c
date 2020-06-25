@@ -3,7 +3,7 @@
 
 #include "c_printf.h"
 #include "log.h"
-#include "vehicle.h"
+#include "state.h"
 
 void clear() {
 #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
@@ -29,13 +29,18 @@ char menu() {
 
 int handleMenu(int option) {
   int code = 0;
+  State initial;
   switch (option) {
     case 0:
       log_warn("Call function to handle random initialization");
       break;
-    case 1:
-      log_warn("Call function to handle manual initialization");
-      break;
+    case 1: {
+      initial = state_from_stdin();
+      for (size_t i = 0; i < 4; i++) {
+        vehicle_display(stdout, &initial.vehicles[i]);
+        printf("\n");
+      }
+    } break;
     case 2:
       break;
     default:
@@ -45,6 +50,4 @@ int handleMenu(int option) {
   return code;
 }
 
-int main() {
-  return 0;
-}
+int main() { return handleMenu(menu()); }

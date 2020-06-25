@@ -8,7 +8,7 @@ endif
 
 CC = gcc
 
-SRC = $(addprefix src/, main.c list.c list_node.c list_iterator.c c_printf.c vehicle.c)
+SRC = $(addprefix src/, main.c list.c list_node.c list_iterator.c c_printf.c vehicle.c point.c state.c search.c)
 OBJ = $(SRC:.c=.o)
 EXE = vehicle.out
 

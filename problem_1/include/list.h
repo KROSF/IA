@@ -32,10 +32,7 @@ extern "C" {
  * list_t iterator direction.
  */
 
-typedef enum {
-  LIST_HEAD,
-  LIST_TAIL
-} list_direction_t;
+typedef enum { LIST_HEAD, LIST_TAIL } list_direction_t;
 
 /*
  * list_t node struct.
@@ -51,29 +48,27 @@ typedef struct list_node {
  * list_t struct.
  */
 
-typedef struct
-{
+typedef struct {
   list_node_t *head;
   list_node_t *tail;
   unsigned int len;
   void (*free)(void *val);
   int (*match)(void *a, void *b);
+  int (*cmp)(void *a, void *b);
 } list_t;
 
 /*
  * list_t iterator struct.
  */
 
-typedef struct
-{
+typedef struct {
   list_node_t *next;
   list_direction_t direction;
 } list_iterator_t;
 
 // Node prototypes.
 
-list_node_t *
-list_node_new(void *val);
+list_node_t *list_node_new(void *val);
 
 // list_t prototypes.
 
@@ -94,6 +89,8 @@ list_node_t *list_lpop(list_t *self);
 void list_remove(list_t *self, list_node_t *node);
 
 void list_destroy(list_t *self);
+void list_sort(list_t *self);
+void list_merge(list_t *rhs, list_t *lhs);
 
 // list_t iterator prototypes.
 
