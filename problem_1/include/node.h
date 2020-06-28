@@ -5,7 +5,7 @@
 
 typedef struct node_t {
   State* state;
-  Node* prev;
+  struct node_t* prev;
   Operator op;
   int cost;
   int depth;
@@ -15,5 +15,8 @@ typedef struct node_t {
 list_t* node_expand(Node* node, Heuristic heuristic);
 Node* node_initial(State* initial_state, Heuristic heuristic);
 int node_equals(void* rhs, void* lhs);
+int node_vorax_comparator(void* rhs, void* lhs);
+int node_blind_comparator(void* rhs, void* lhs);
+int node_a_start_comparator(void* rhs, void* lhs);
 
 #endif

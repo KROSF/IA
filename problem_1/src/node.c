@@ -23,9 +23,9 @@ static Node* node_succesor(Node* node, Operator op, Heuristic heuristic) {
 
 list_t* node_expand(Node* node, Heuristic heuristic) {
   list_t* successors = list_new();
-  for (Operator op = UP_V0; op < OPERATORS; ++op) {
-    if (state_is_valid_operator(node->state, op)) {
-      list_rpush(successors, list_node_new(node_succesor(node, op, heuristic)));
+  for (size_t op = UP_V0; op < OPERATORS; ++op) {
+    if (state_is_valid_operator(node->state, (Operator)op)) {
+      list_rpush(successors, list_node_new(node_succesor(node, (Operator)op, heuristic)));
     }
   }
 
@@ -37,3 +37,17 @@ int node_equals(void* rhs, void* lhs) {
   Node* b = (Node*)lhs;
   return (int)state_equals(a->state, b->state);
 }
+
+int node_vorax_comparator(void* rhs, void* lhs) {
+  Node* a = (Node*)rhs;
+  Node* b = (Node*)lhs;
+  return (int)a->value > b->value;
+}
+
+int node_a_start_comparator(void* rhs, void* lhs) {
+  Node* a = (Node*)rhs;
+  Node* b = (Node*)lhs;
+  return (int)((a->value + a->cost) > (b->value + b->cost));
+}
+
+int node_blind_comparator(void* rhs, void* lhs) { return 0; }

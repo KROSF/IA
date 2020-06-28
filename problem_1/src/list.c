@@ -28,12 +28,30 @@ void list_sort(list_t *self) {
   }
 }
 
-void list_merge(list_t *rhs, list_t *lhs) {
+list_t *list_merge(list_t *lhs, list_t *rhs) {
   list_node_t *node;
 
-  while ((node = list_lpop(lhs))) {
-    list_rpush(rhs, node);
+  while ((node = list_lpop(rhs))) {
+    list_rpush(lhs, node);
   }
+  list_destroy(rhs);
+  return lhs;
+}
+
+static void list_empty(list_t *self) {
+  list_node_t *node;
+
+  while ((node = list_lpop(self)))
+    ;
+}
+
+void list_slice(list_t *destination, list_t *source, int limit) {
+  list_node_t *node;
+  list_empty(destination);
+  while ((node = list_lpop(source)) && destination->len < limit) {
+    list_rpush(destination, node);
+  }
+  list_empty(source);
 }
 
 /*

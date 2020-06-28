@@ -1,16 +1,16 @@
 DEBUG ?= 1
 
 ifeq ($(DEBUG), 1)
-    CFLAGS = -std=c11 -g -Wall -I./include -DDEBUG -DSTATE_DISPLAY
+    CFLAGS = -std=c11 -g -Wall -I./include -DDEBUG
 else
     CFLAGS = -std=c11 -Wall -I./include -DNDEBUG -O3
 endif
 
 CC = gcc
 
-SRC = $(addprefix src/, main.c list.c list_node.c list_iterator.c vehicle.c point.c state.c search.c node.c)
+SRC = $(addprefix src/, main.c node.c vec.c move.c)
 OBJ = $(SRC:.c=.o)
-EXE = vehicle.out
+EXE = ab.out
 
 all: $(EXE)
 

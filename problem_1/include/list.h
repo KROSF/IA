@@ -44,6 +44,9 @@ typedef struct list_node {
   void *val;
 } list_node_t;
 
+typedef int (*list_match_t)(void *a, void *b);
+typedef int (*list_cmp_t)(void *a, void *b);
+
 /*
  * list_t struct.
  */
@@ -53,8 +56,8 @@ typedef struct {
   list_node_t *tail;
   unsigned int len;
   void (*free)(void *val);
-  int (*match)(void *a, void *b);
-  int (*cmp)(void *a, void *b);
+  list_match_t match;
+  list_cmp_t cmp;
 } list_t;
 
 /*
@@ -90,7 +93,8 @@ void list_remove(list_t *self, list_node_t *node);
 
 void list_destroy(list_t *self);
 void list_sort(list_t *self);
-void list_merge(list_t *rhs, list_t *lhs);
+void list_slice(list_t *destination, list_t *source, int limit);
+list_t *list_merge(list_t *lhs, list_t *rhs);
 
 // list_t iterator prototypes.
 

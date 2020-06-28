@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "colors.h"
+#include "log.h"
+
 static int vehicle_index_from_operator(Operator op) {
   switch (op) {
     case UP_V0:
@@ -45,13 +48,12 @@ static bool vehicle_contains_vehicle(const Vehicle *lhs, const Vehicle *rhs) {
 
 static bool is_valid_movement(const Vehicle *vehicle, const State *state, Point direction) {
   Vehicle next = {.upper = point_add(&vehicle->upper, &direction), .down = point_add(&vehicle->down, &direction)};
-
-  if (!(next.upper.x > 0) || !(next.down.x < state->rows) || !(next.upper.y > 0) || !(next.down.y < state->cols)) {
+  if (next.upper.x < 0 || next.down.x > state->rows - 1 || next.upper.y < 0 || next.down.y > state->cols - 1) {
     return false;
   }
 
   for (size_t i = 0; i < 4; ++i) {
-    if ((!vehicle_equals(vehicle, &state->vehicles[i])) && vehicle_contains_vehicle(vehicle, &state->vehicles[i])) {
+    if ((!vehicle_equals(vehicle, &state->vehicles[i])) && vehicle_contains_vehicle(&next, &state->vehicles[i])) {
       return false;
     }
   }
@@ -64,7 +66,7 @@ State state_new(Vehicle vehicles[4], int rows, int cols, Vehicle exit) {
       .vehicles = {vehicles[0], vehicles[1], vehicles[2], vehicles[3]}, .rows = rows, .cols = cols, .exit = exit};
 }
 
-bool state_is_target(const State *state) { return point_equals(&state->vehicles[0].upper, &state->exit.upper); }
+bool state_is_target(const State *state) { return point_equals(&state->vehicles[0].down, &state->exit.down); }
 
 bool state_is_valid_operator(const State *state, Operator op) {
   const Vehicle *vehicle = &state->vehicles[vehicle_index_from_operator(op)];
@@ -160,7 +162,7 @@ State state_from_stdin() {
   scanf("%d", &cols);
   printf("Insert col of exit: ");
   scanf("%d", &exit_col);
-  printf("Insert coordinates for vehicle V0 (the one who reaches the exit)\n");
+  printf("Insert coordinates for vehicle V0 [2x2] (the one who reaches the exit)\n");
   vehicles[0] = vehicle_from_stdin((Point){1, 1});
   printf("Insert coordinates for vehicle V1\n");
   vehicles[1] = vehicle_from_stdin((Point){1, 0});
@@ -170,4 +172,61 @@ State state_from_stdin() {
   vehicles[3] = vehicle_from_stdin((Point){0, 0});
   return state_new(vehicles, rows, cols,
                    (Vehicle){.upper = {.x = rows - 1, .y = exit_col}, .down = {.x = rows - 1, .y = exit_col + 1}});
+}
+
+static char *vehicle_symbol(size_t index) {
+  switch (index) {
+    case 0:
+      return RED "█ " NORMAL;
+    case 1:
+      return MAGENTA "█ " NORMAL;
+    case 2:
+      return BLUE "█ " NORMAL;
+    case 3:
+      return CYAN "█ " NORMAL;
+
+    default:
+      return "█ ";
+  }
+}
+
+void state_display(FILE *stream, const State *state) {
+  char *color;
+  const Vehicle *vehicle;
+  char *grid[state->rows][state->cols];
+
+  for (size_t i = 0; i < state->rows; ++i) {
+    for (size_t j = 0; j < state->cols; ++j) {
+      grid[i][j] = "█ ";
+    }
+  }
+
+  for (size_t i = 0; i < 4; ++i) {
+    vehicle = &state->vehicles[i];
+    color = vehicle_symbol(i);
+    grid[vehicle->upper.x][vehicle->down.y] = color;
+    grid[vehicle->down.x][vehicle->upper.y] = color;
+    grid[vehicle->upper.x][vehicle->upper.y] = color;
+    grid[vehicle->down.x][vehicle->down.y] = color;
+  }
+
+  vehicle = &state->exit;
+  grid[vehicle->upper.x][vehicle->down.y] = GREEN "█ " NORMAL;
+  grid[vehicle->down.x][vehicle->upper.y] = GREEN "█ " NORMAL;
+  grid[vehicle->upper.x][vehicle->upper.y] = GREEN "█ " NORMAL;
+  grid[vehicle->down.x][vehicle->down.y] = GREEN "█ " NORMAL;
+
+  fprintf(stream, "   ");
+  for (size_t i = 0; i < state->cols; ++i) {
+    fprintf(stream, "%zu ", i);
+  }
+  fprintf(stream, "\n");
+
+  for (size_t i = 0; i < state->rows; ++i) {
+    fprintf(stream, "%2zu ", i);
+    for (size_t j = 0; j < state->cols; ++j) {
+      fprintf(stream, "%s", grid[i][j]);
+    }
+    fprintf(stream, "\n");
+  }
 }
