@@ -3,7 +3,6 @@
 #include <time.h>
 
 #include "colors.h"
-#include "log.h"
 #include "search.h"
 #include "state.h"
 

@@ -2,7 +2,6 @@
 
 #include "bench.h"
 #include "colors.h"
-#include "log.h"
 #include "node.h"
 
 typedef struct performance_t {

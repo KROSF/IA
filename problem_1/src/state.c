@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "colors.h"
-#include "log.h"
 
 static int vehicle_index_from_operator(Operator op) {
   switch (op) {
