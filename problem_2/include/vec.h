@@ -1,5 +1,13 @@
+/**
+ * Copyright (c) 2014 rxi
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the MIT license. See LICENSE for details.
+ */
 #ifndef VEC_H
 #define VEC_H
+
+#define VEC_VERSION "0.2.1"
 
 #include <stdlib.h>
 #include <string.h>
@@ -16,7 +24,7 @@
 
 #define vec_deinit(v) (free((v)->data), vec_init(v))
 
-#define vec_push(v, val) (vec_expand_(vec_unpack_(v)) ? -1 : ((v)->data[(v)->length++] = (val), 0), 0)
+#define vec_push(v, val) (vec_expand_(vec_unpack_(v)) ? -1 : ((v)->data[(v)->length++] = (val), 0))
 
 #define vec_pop(v) (v)->data[--(v)->length]
 

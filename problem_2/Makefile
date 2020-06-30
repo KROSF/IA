@@ -1,14 +1,14 @@
 DEBUG ?= 1
 
 ifeq ($(DEBUG), 1)
-    CFLAGS = -std=c11 -g -Wall -I./include -DDEBUG
+  CFLAGS = -std=c11 -g -Wall -Wextra -I./include -DDEBUG
 else
-    CFLAGS = -std=c11 -Wall -I./include -DNDEBUG -O3
+  CFLAGS = -std=c11 -Wall -Wextra -Werror -I./include -DNDEBUG -O3
 endif
 
 CC = gcc
 
-SRC = $(addprefix src/, main.c node.c vec.c move.c)
+SRC = $(addprefix src/, main.c vec.c move.c node.c minimax.c commander.c)
 OBJ = $(SRC:.c=.o)
 EXE = ab.out
 

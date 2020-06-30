@@ -1,5 +1,6 @@
 #ifndef COLORS_H
 #define COLORS_H
+
 #define BLACK "\x1b[30m"
 #define RED "\x1b[31m"
 #define GREEN "\x1b[32m"
@@ -8,4 +9,5 @@
 #define MAGENTA "\x1b[35m"
 #define CYAN "\x1b[36m"
 #define NORMAL "\x1b[0m"
+
 #endif
