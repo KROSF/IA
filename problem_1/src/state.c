@@ -150,7 +150,33 @@ State *state_apply_operator(const State *current, Operator op) {
   return next;
 }
 
-State state_random();
+State state_random() {
+  int rows = 12;
+  int cols = 10;
+  int exit_col = random_number(0, cols - 2);
+  Vehicle vehicles[4] = {};
+
+  vehicles[0] = vehicle_random(rows, cols, (Point){1, 1});
+  vehicles[1] = vehicle_random(rows, cols, (Point){1, 0});
+  vehicles[2] = vehicle_random(rows, cols, (Point){0, 1});
+  vehicles[3] = vehicle_random(rows, cols, (Point){0, 0});
+
+  while (vehicle_contains_vehicle(&vehicles[0], &vehicles[1])) {
+    vehicles[1] = vehicle_random(rows, cols, (Point){1, 0});
+  }
+
+  while (vehicle_contains_vehicle(&vehicles[0], &vehicles[2]) || vehicle_contains_vehicle(&vehicles[1], &vehicles[2])) {
+    vehicles[2] = vehicle_random(rows, cols, (Point){1, 0});
+  }
+
+  while (vehicle_contains_vehicle(&vehicles[0], &vehicles[3]) || vehicle_contains_vehicle(&vehicles[1], &vehicles[3]) ||
+         vehicle_contains_vehicle(&vehicles[2], &vehicles[3])) {
+    vehicles[3] = vehicle_random(rows, cols, (Point){0, 0});
+  }
+  return state_new(vehicles, rows, cols,
+                   (Vehicle){.upper = {.x = rows - 1, .y = exit_col}, .down = {.x = rows - 1, .y = exit_col + 1}});
+}
+
 State state_from_stdin() {
   int rows = 0;
   int cols = 0;
@@ -163,13 +189,30 @@ State state_from_stdin() {
   printf("Insert col of exit: ");
   scanf("%d", &exit_col);
   printf("Insert coordinates for vehicle V0 [2x2] (the one who reaches the exit)\n");
-  vehicles[0] = vehicle_from_stdin((Point){1, 1});
+  vehicles[0] = vehicle_from_stdin(rows, cols, (Point){1, 1});
   printf("Insert coordinates for vehicle V1\n");
-  vehicles[1] = vehicle_from_stdin((Point){1, 0});
+  vehicles[1] = vehicle_from_stdin(rows, cols, (Point){1, 0});
   printf("Insert coordinates for vehicle V2\n");
-  vehicles[2] = vehicle_from_stdin((Point){0, 1});
+  vehicles[2] = vehicle_from_stdin(rows, cols, (Point){0, 1});
   printf("Insert coordinates for vehicle V3\n");
-  vehicles[3] = vehicle_from_stdin((Point){0, 0});
+  vehicles[3] = vehicle_from_stdin(rows, cols, (Point){0, 0});
+
+  while (vehicle_contains_vehicle(&vehicles[0], &vehicles[1])) {
+    printf("Insert coordinates for vehicle V1\n");
+    vehicles[1] = vehicle_from_stdin(rows, cols, (Point){1, 0});
+  }
+
+  while (vehicle_contains_vehicle(&vehicles[0], &vehicles[2]) || vehicle_contains_vehicle(&vehicles[1], &vehicles[2])) {
+    printf("Insert coordinates for vehicle V2\n");
+    vehicles[2] = vehicle_from_stdin(rows, cols, (Point){0, 1});
+  }
+
+  while (vehicle_contains_vehicle(&vehicles[0], &vehicles[3]) || vehicle_contains_vehicle(&vehicles[1], &vehicles[3]) ||
+         vehicle_contains_vehicle(&vehicles[2], &vehicles[3])) {
+    printf("Insert coordinates for vehicle V3\n");
+    vehicles[3] = vehicle_from_stdin(rows, cols, (Point){0, 0});
+  }
+
   return state_new(vehicles, rows, cols,
                    (Vehicle){.upper = {.x = rows - 1, .y = exit_col}, .down = {.x = rows - 1, .y = exit_col + 1}});
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "colors.h"
 #include "log.h"
@@ -29,23 +30,60 @@ char menu() {
   return option;
 }
 
+void strategies(State* initial) {
+  int option = -1;
+  while (option > 7 || option < 0) {
+    printf("%s%s %s%s\n", YELLOW, "0.", BLUE, "breadth first search (Anchura)");
+    printf("%s%s %s%s\n", YELLOW, "1.", BLUE, "depth first search (Profundida)");
+    printf("%s%s %s%s\n", YELLOW, "2.", BLUE, "A* (A Estrella)");
+    printf("%s%s %s%s\n", YELLOW, "3.", BLUE, "Vorax");
+    printf("%s%s %s%s\n", YELLOW, "4.", BLUE, "Beam search [n=2] ( haz local )");
+    printf("%s%s %s%s\n", YELLOW, "5.", BLUE, "Beam search [n=4] ( haz local )");
+    printf("%s%s %s%s%s\n", YELLOW, "6.", BLUE, "Exit", NORMAL);
+    scanf("%d", &option);
+    clear();
+  }
+
+  switch (option) {
+    case 0:
+      breadth_first_search(initial);
+      break;
+    case 1:
+      depth_first_search(initial);
+      break;
+    case 2:
+      a_start_search(initial);
+      break;
+    case 3:
+      vorax_search(initial);
+      break;
+    case 4:
+      beam_search(initial, 2);
+      break;
+    case 5:
+      beam_search(initial, 4);
+      break;
+    default:
+      break;
+  }
+}
+
 int handleMenu(int option) {
   int code = 0;
   State initial = state_new((Vehicle[]){{{2, 2}, {3, 3}}, {{2, 0}, {3, 0}}, {{4, 2}, {4, 3}}, {{0, 0}, {0, 0}}}, 8, 4,
                             (Vehicle){{7, 1}, {7, 2}});
 
   switch (option) {
-    case 0:
-      log_warn("Call function to handle random initialization");
-      break;
+    case 0: {
+      initial = state_random();
+      strategies(&initial);
+    } break;
     case 1: {
       initial = state_from_stdin();
-      a_start_search(&initial);
+      strategies(&initial);
     } break;
     case 2: {
-      state_display(stdout, &initial);
-      beam_search(&initial, 4);
-      // breadth_first_search(&initial);
+      strategies(&initial);
     } break;
     case 3:
       break;
@@ -56,4 +94,7 @@ int handleMenu(int option) {
   return code;
 }
 
-int main() { return handleMenu(menu()); }
+int main() {
+  srand(time(NULL));
+  return handleMenu(menu());
+}

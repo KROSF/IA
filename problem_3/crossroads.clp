@@ -25,7 +25,6 @@
  (slot semaforo)
  (slot matricula))
 
-
 (deffacts hechos_iniciales
    ;; Vias
    (via (identificador via_1) (descripcion primera))
@@ -70,18 +69,19 @@
    ?sensor_activado_ <- (sensor_activado (sensor ?sensor) (semaforo ?semaforo) (matricula ?matricula))
    =>
    (modify ?sensor_ (estado activado) (vehiculo ?vehiculo))
-   (printout t "El sensor " ?sensor " del semaforo " ?semaforo " ha sidentificadoro atravesado por el vehiculo de matricula " ?matricula " en la via " ?via crlf)
+   (printout t "El sensor " ?sensor " acaba de ser activado por el vehículo con matrícula "?matricula" por la vía " ?via crlf)
    (retract ?sensor_activado_))
 
 (defrule Llegada_vehiculo
    ?vehiculo_ <- (vehiculo (matricula ?matricula) (tipo ?tipo) (via ?via) (accion ?accion))
    ?sensor_2_ <- (sensor (identificador 2) (semaforo ?semaforo) (estado activado) (vehiculo ?vehiculo))
    ?sensor_1_ <- (sensor (identificador 1) (semaforo ?semaforo_2) (estado desactivado) (vehiculo ?vehiculo_2))
+   (semaforo (identificador ?id) (via ?via2) (estado ?estado))
    =>
-   (modify ?vehiculo_ (accion llegando))
+   (modify ?vehiculo_ (accion llegando) (via ?via2))
    (modify ?sensor_2_ (estado desactivado))
    (modify ?sensor_1_ (estado activado) (vehiculo ?vehiculo))
-   (printout t "El " ?tipo " con matricula " ?matricula " esta llegando al cruce " crlf))
+   (printout t "El " ?tipo " con matricula " ?matricula " esta llegando al cruce de la via "?via " con la via "?via2 crlf))
 
 (deffunction contar_vehiculos (?valor)
    (+ ?valor 1))
@@ -93,7 +93,7 @@
    =>
    (modify ?vehiculo_ (accion realizado))
    (modify ?via_ (vehiculo (contar_vehiculos ?vehiculo_2)))
-   (printout t "el " ?tipo " con matricula " ?matricula " acaba de finalizar el cruce " crlf)
+   (printout t "El " ?tipo " con matricula " ?matricula " acaba de finalizar el cruce de la via "?via " con la via "?identificador crlf)
    (modify ?sensor_ (estado desactivado)))
 
 (defrule Impedir_paso_vehiculo
@@ -101,6 +101,7 @@
    ?vehiculo_ <- (vehiculo (matricula ?matricula_2) (tipo ?tipo_2) (via ?via_2) (accion llegando))
    (sensor (identificador 1) (semaforo ?semaforo) (estado activado) (vehiculo ?vehiculo))
    (semaforo (identificador ?semaforo) (via ?via_2) (estado rojo))
+   (semaforo (identificador ?semaforo2) (via ?via) (estado ?estado))
    =>
    (modify ?vehiculo_ (accion esperando))
-   (printout t "semaforo " ?semaforo " en rojo, el " ?tipo_2 " con matricula " ?matricula_2 " se encuentra esperando" crlf))
+   (printout t "semaforo " ?semaforo " en rojo. El " ?tipo_2 " con matricula " ?matricula_2 " se encuentra esperando" crlf))

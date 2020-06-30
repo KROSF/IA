@@ -48,10 +48,21 @@ static int manhattan_heuristic(const State* state) {
   return abs(state->vehicles[0].down.x - state->exit.down.x) + abs(state->vehicles[0].down.y - state->exit.down.y);
 }
 
-static int manhattan_to_all_vehicles(const State* state) {
+static int beam_search_heuristic(const State* state) {
   int value = 0;
   for (size_t i = 0; i < 4; ++i) {
-    value += abs(state->exit.down.x - state->vehicles[i].down.x) + abs(state->exit.down.y - state->vehicles[i].down.y);
+    if (i != 0) {
+      int distance = abs(state->vehicles[0].down.x - state->vehicles[i].down.x) +
+                     abs(state->vehicles[0].down.y - state->vehicles[i].down.y);
+      value -= distance;
+    } else {
+      int distance =
+          abs(state->exit.down.x - state->vehicles[i].down.x) + abs(state->exit.down.y - state->vehicles[i].down.y);
+      if (distance == 1) {
+        return -100;
+      }
+      value += distance;
+    }
   }
   return value;
 }
@@ -188,7 +199,6 @@ static void local_search(State* initial_state, Heuristic heuristic, list_cmp_t c
 
   Node* target = NULL;
   bool is_target = false;
-  list_node_t* found = NULL;
   list_t* succesors = list_new();
   succesors->cmp = cmp;
   succesors->free = free;
@@ -217,7 +227,6 @@ static void local_search(State* initial_state, Heuristic heuristic, list_cmp_t c
     if (!is_target) {
       for (list_node_t* node = open->head; node != NULL; node = node->next) {
         succesors = list_merge(succesors, node_expand((Node*)node->val, heuristic));
-        state_display(stdout, ((Node*)node->val)->state);
       }
 
       performance.visited += open->len;
@@ -246,4 +255,4 @@ static void local_search(State* initial_state, Heuristic heuristic, list_cmp_t c
   list_destroy(succesors);
 }
 
-void beam_search(State* initial, int k) { local_search(initial, manhattan_heuristic, node_a_start_comparator, k); }
+void beam_search(State* initial, int k) { local_search(initial, beam_search_heuristic, node_a_start_comparator, k); }
