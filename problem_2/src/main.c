@@ -17,6 +17,33 @@ void clear() {
 #endif
 }
 
+/**
+ * @brief  Validate if user given state is valid.
+ */
+static bool validate_user_state(const char *init) {
+  int len = strlen(init);
+  int player_a = 0;
+  int player_b = 0;
+
+  for (int i = 0; i < len; ++i) {
+    if (init[i] == PLAYER_A) {
+      ++player_a;
+    } else {
+      ++player_b;
+    }
+  }
+
+  if (player_a != player_b) {
+    return false;
+  }
+
+  if ((player_a + player_b) != len) {
+    return false;
+  }
+
+  return true;
+}
+
 static void game(const char *init) {
   Node *game_node = node_new(init);
   int winner = 0;
@@ -77,8 +104,11 @@ static void init_default_state() {
   default_state[20] = '\0';
 }
 
+/**
+ * @brief  set given user state as intial is if incorrent use default
+ */
 static void set_intial_state(command_t *self) {
-  if (self->arg != NULL) {
+  if (self->arg != NULL && validate_user_state(self->arg)) {
     int len = strlen(self->arg);
     default_state = realloc(default_state, (len + 1) * sizeof(char));
     strcpy(default_state, self->arg);

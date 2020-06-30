@@ -5,6 +5,11 @@
 
 #include "colors.h"
 
+/**
+ * @brief  count pieces of each player
+ * @param  *node: current game state
+ * @retval a tuple with pieces of each player
+ */
 static tuple_int_t count_players(const Node *node) {
   tuple_int_t counter = {0, 0};
 

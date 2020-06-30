@@ -4,6 +4,11 @@ static int max(int a, int b) { return (a > b) ? a : b; }
 
 static int min(int a, int b) { return (a < b) ? a : b; }
 
+/**
+ * @brief  utility function to apply on a leaf node
+ * @param  *node: current game state
+ * @retval utility value of given node
+ */
 static int utility(const Node *node) {
   if (node->pieces.a == node->size) {
     return 10 * node->pieces.a;
@@ -12,12 +17,21 @@ static int utility(const Node *node) {
   return -10 * node->pieces.b;
 }
 
+/**
+ * @brief  heuristic to estimate node value
+ * @param  *node: current game state
+ * @param  player:
+ * @retval heuristic value
+ */
 static int heuristic(const Node *node, char player) {
   int value = abs(node->pieces.a - node->pieces.b) + 2;
 
   return player == PLAYER_A ? value * 10 : value * -10;
 }
 
+/**
+ * @brief recursive function to calculate minmax
+ */
 static int minimax_with_limit_(Node *node, int depth, bool isMax, char player, int limit) {
   if (node_is_leaf(node)) {
     int value = utility(node);
@@ -66,6 +80,9 @@ static int minimax_with_limit_(Node *node, int depth, bool isMax, char player, i
   }
 }
 
+/**
+ * @brief recursive function to calculate alpha beta prunning
+ */
 static int minimax_alpha_beta_with_limit_(Node *node, int depth, bool isMax, char player, int alpha, int beta,
                                           int limit) {
   if (node_is_leaf(node)) {
