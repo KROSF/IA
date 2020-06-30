@@ -20,6 +20,12 @@
    (slot via)
    (slot accion (allowed-values ausente llegando esperando cruzando realizado) (default ausente)))
 
+(deftemplate sensor_activado
+ (slot sensor)
+ (slot semaforo)
+ (slot matricula))
+
+
 (deffacts hechos_iniciales
    ;; Vias
    (via (identificador via_1) (descripcion primera))
@@ -52,19 +58,19 @@
    (sensor (identificador 1) (semaforo D) (estado desactivado))
    (sensor (identificador 2) (semaforo D) (estado desactivado))
    ;; Sensores activados
-   (sensor_activado 2 A 1234ASD)
-   (sensor_activado 2 B 1234ABC)
-   (sensor_activado 2 C 1234XYZ)
-   (sensor_activado 2 D 1234IJK))
+   (sensor_activado (sensor 2) (semaforo A) (matricula 1234ASD))
+   (sensor_activado (sensor 2) (semaforo B) (matricula 1234ABC))
+   (sensor_activado (sensor 2) (semaforo C) (matricula 1234XYZ))
+   (sensor_activado (sensor 2) (semaforo D) (matricula 1234IJK)))
 
 (defrule Registrar_info
    ?sensor_ <- (sensor (identificador 2) (semaforo ?semaforo) (estado desactivado) (vehiculo ?vehiculo))
    (semaforo (identificador ?semaforo) (via ?via) (estado ?estado))
    (vehiculo (matricula ?matricula) (tipo ?tipo) (via ?via))
-   ?sensor_activado_ <- (sensor_activado ?sensor ?semaforo ?matricula)
+   ?sensor_activado_ <- (sensor_activado (sensor ?sensor) (semaforo ?semaforo) (matricula ?matricula))
    =>
    (modify ?sensor_ (estado activado) (vehiculo ?vehiculo))
-   (printout t "el sensor " ?sensor " del semaforo " ?semaforo " ha sidentificadoro atravesado por el vehiculo de matricula " ?matricula " en la via " ?via crlf)
+   (printout t "El sensor " ?sensor " del semaforo " ?semaforo " ha sidentificadoro atravesado por el vehiculo de matricula " ?matricula " en la via " ?via crlf)
    (retract ?sensor_activado_))
 
 (defrule Llegada_vehiculo
@@ -75,7 +81,7 @@
    (modify ?vehiculo_ (accion llegando))
    (modify ?sensor_2_ (estado desactivado))
    (modify ?sensor_1_ (estado activado) (vehiculo ?vehiculo))
-   (printout t "el " ?tipo " con matricula " ?matricula " esta llegando al cruce " crlf))
+   (printout t "El " ?tipo " con matricula " ?matricula " esta llegando al cruce " crlf))
 
 (deffunction contar_vehiculos (?valor)
    (+ ?valor 1))
